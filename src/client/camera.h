@@ -151,6 +151,9 @@ public:
 	// Pass 0 for left click, 1 for right click
 	void setDigging(s32 button);
 
+	// Resets the digging animation time to 0
+	void resetDiggingAnim(s32 button);
+
 	// Replace the wielded item mesh
 	void wield(const ItemStack &item);
 
@@ -253,6 +256,9 @@ private:
 	// If 0, left-click digging animation
 	// If 1, right-click digging animation
 	s32 m_digging_button = -1;
+
+	// Whether the digging animation will reset in the next frame.
+	bool m_digging_will_reset;
 
 	// Animation when changing wielded item
 	f32 m_wield_change_timer = 0.125f;

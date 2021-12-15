@@ -197,6 +197,10 @@ void Camera::step(f32 dtime)
 	if (m_digging_button != -1) {
 		f32 offset = dtime * 4.8f;
 		float m_digging_anim_was = m_digging_anim;
+
+		if (m_digging_will_reset)
+			m_digging_anim = 0;
+
 		m_digging_anim += offset;
 		if (m_digging_anim >= 1)
 		{
@@ -213,6 +217,7 @@ void Camera::step(f32 dtime)
 			}
 		}
 	}
+	m_digging_will_reset = false;
 }
 
 static inline v2f dir(const v2f &pos_dist)
@@ -607,6 +612,12 @@ void Camera::setDigging(s32 button)
 {
 	if (m_digging_button == -1)
 		m_digging_button = button;
+}
+
+void Camera::resetDiggingAnim(s32 button)
+{
+	if (m_digging_button == button)
+		m_digging_will_reset = true;
 }
 
 void Camera::wield(const ItemStack &item)

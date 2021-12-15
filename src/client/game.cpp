@@ -3187,7 +3187,12 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 
 	runData.pointed_old = pointed;
 
-	if (runData.punching || wasKeyPressed(KeyType::DIG))
+	bool was_dig_pressed = wasKeyPressed(KeyType::DIG);
+
+	if (was_dig_pressed)
+		camera->resetDiggingAnim(0);
+
+	if (runData.punching || was_dig_pressed)
 		camera->setDigging(0); // dig animation
 
 	input->clearWasKeyPressed();
@@ -3347,6 +3352,7 @@ void Game::handlePointingAtNode(const PointedThing &pointed,
 
 		// Placing animation (always shown for feedback)
 		camera->setDigging(1);
+		camera->resetDiggingAnim(1);
 
 		soundmaker->m_player_rightpunch_sound = SimpleSoundSpec();
 
