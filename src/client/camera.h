@@ -195,6 +195,8 @@ public:
 	inline void addArmInertia(f32 player_yaw);
 
 private:
+	void shuffleDiggingVariance();
+
 	// Nodes
 	scene::ISceneNode *m_playernode = nullptr;
 	scene::ISceneNode *m_headnode = nullptr;
@@ -256,6 +258,9 @@ private:
 	// If 0, left-click digging animation
 	// If 1, right-click digging animation
 	s32 m_digging_button = -1;
+
+	// Used to apply slight variations to the digging animation.
+	f32 m_digging_variance = 0.0f;
 
 	// Whether the digging animation will reset in the next frame.
 	bool m_digging_will_reset;

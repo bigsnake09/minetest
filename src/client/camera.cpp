@@ -195,7 +195,7 @@ void Camera::step(f32 dtime)
 	}
 
 	if (m_digging_button != -1) {
-		f32 offset = dtime * 4.8f;
+		f32 offset = dtime * 5.2f;
 		float m_digging_anim_was = m_digging_anim;
 
 		if (m_digging_will_reset)
@@ -541,13 +541,14 @@ void Camera::update(LocalPlayer* player, f32 frametime, f32 busytime, f32 tool_r
 	if (m_digging_button != -1)
 	{
 		f32 digfrac = m_digging_anim;
+		f32 variance = m_digging_variance * 100;
 		wield_position.X -= 50 * sin(pow(digfrac, 0.8f) * M_PI);
-		wield_position.Y += 24 * sin(digfrac * 1.8 * M_PI);
+		wield_position.Y += (24 * sin(digfrac * 1.8 * M_PI)) - (variance * pow(digfrac, 2.0f));
 		wield_position.Z += 25 * 0.5;
 
 		// Euler angles are PURE EVIL, so why not use quaternions?
 		core::quaternion quat_begin(wield_rotation * core::DEGTORAD);
-		core::quaternion quat_end(v3f(80, 30, 100) * core::DEGTORAD);
+		core::quaternion quat_end(v3f(65 + (variance * 0.3f), -5, 100) * core::DEGTORAD);
 		core::quaternion quat_slerp;
 		quat_slerp.slerp(quat_begin, quat_end, sin(digfrac * M_PI));
 		quat_slerp.toEuler(wield_rotation);
@@ -610,14 +611,23 @@ void Camera::updateViewingRange()
 
 void Camera::setDigging(s32 button)
 {
-	if (m_digging_button == -1)
+	if (m_digging_button == -1) {
 		m_digging_button = button;
+		shuffleDiggingVariance();
+	}
 }
 
 void Camera::resetDiggingAnim(s32 button)
 {
-	if (m_digging_button == button)
+	if (m_digging_button == button) {
 		m_digging_will_reset = true;
+		shuffleDiggingVariance();
+	}
+}
+
+void Camera::shuffleDiggingVariance()
+{
+	m_digging_variance = rand() / (float)RAND_MAX;
 }
 
 void Camera::wield(const ItemStack &item)
