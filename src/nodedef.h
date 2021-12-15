@@ -473,6 +473,11 @@ struct ContentFeatures
 	bool isLiquid() const{
 		return (liquid_type != LIQUID_NONE);
 	}
+
+	bool isLiquidPointable() const {
+		return {liquid_type == LIQUID_SOURCE};
+	}
+
 	bool sameLiquid(const ContentFeatures &f) const{
 		if(!isLiquid() || !f.isLiquid()) return false;
 		return (liquid_alternative_flowing_id == f.liquid_alternative_flowing_id);
