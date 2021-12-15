@@ -316,13 +316,13 @@ public:
 	static void cameraPunchLeft(MtEvent *e, void *data)
 	{
 		SoundMaker *sm = (SoundMaker *)data;
-		sm->m_sound->playSound(sm->m_player_leftpunch_sound, false);
+		sm->m_sound->playSound(sm->m_player_leftpunch_sound, false, rand() / (float)RAND_MAX * (1.02 - 0.98) + 0.98);
 	}
 
 	static void cameraPunchRight(MtEvent *e, void *data)
 	{
 		SoundMaker *sm = (SoundMaker *)data;
-		sm->m_sound->playSound(sm->m_player_rightpunch_sound, false);
+		sm->m_sound->playSound(sm->m_player_rightpunch_sound, false, rand() / (float)RAND_MAX * (1.02 - 0.98) + 0.98);
 	}
 
 	static void nodeDug(MtEvent *e, void *data)
