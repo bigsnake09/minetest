@@ -3166,28 +3166,30 @@ void Game::processPlayerInteraction(f32 dtime, bool show_hud, bool show_debug)
 	else
 		runData.repeat_place_timer = 0;
 
-	if (selected_def.usable && isKeyDown(KeyType::DIG)) {
-		if (wasKeyPressed(KeyType::DIG) && (!client->modsLoaded() ||
-				!client->getScript()->on_item_use(selected_item, pointed)))
-			client->interact(INTERACT_USE, pointed);
+	bool was_dig_pressed = wasKeyPressed(KeyType::DIG);
+	if (1 && selected_def.usable && wasKeyPressed(KeyType::PLACE)
+			&& (!client->modsLoaded()
+					   || !client->getScript()->on_item_use(selected_item, pointed))) {
+		client->interact(INTERACT_USE, pointed);
 	} else if (pointed.type == POINTEDTHING_NODE) {
 		handlePointingAtNode(pointed, selected_item, hand_item, dtime);
 	} else if (pointed.type == POINTEDTHING_OBJECT) {
 		v3f player_position  = player->getPosition();
 		handlePointingAtObject(pointed, tool_item, player_position, show_debug);
-	} else if (isKeyDown(KeyType::DIG)) {
-		// When button is held down in air, show continuous animation
-		runData.punching = true;
+	} else if (was_dig_pressed) {
+		// When button is pressed in air, play the digging animation once
+		// to feedback that the user can't dig
+		camera->resetDiggingAnim(0);
+		camera->setDigging(0);
+
 		// Run callback even though item is not usable
-		if (wasKeyPressed(KeyType::DIG) && client->modsLoaded())
+		if (client->modsLoaded())
 			client->getScript()->on_item_use(selected_item, pointed);
 	} else if (wasKeyPressed(KeyType::PLACE)) {
 		handlePointingAtNothing(selected_item);
 	}
 
 	runData.pointed_old = pointed;
-
-	bool was_dig_pressed = wasKeyPressed(KeyType::DIG);
 
 	if (was_dig_pressed)
 		camera->resetDiggingAnim(0);
