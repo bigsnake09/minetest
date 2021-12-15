@@ -3706,8 +3706,8 @@ void Game::handleDigging(const PointedThing &pointed, const v3s16 &nodepos,
 		// We don't want a corresponding delay to very time consuming nodes
 		// and nodes without digging time (e.g. torches) get a fixed delay.
 
-		if (runData.nodig_delay_timer > 0.1)
-			runData.nodig_delay_timer = 0.1;
+		if (runData.nodig_delay_timer > 0.15)
+			runData.nodig_delay_timer = 0.15;
 		else if (runData.dig_instantly)
 			runData.nodig_delay_timer = 0.15;
 
