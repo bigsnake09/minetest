@@ -67,6 +67,12 @@ public:
 	{
 		return playSound(spec.name, loop, spec.gain, spec.fade, spec.pitch);
 	}
+
+	int playSound(const SimpleSoundSpec &spec, bool loop, float pitchmul)
+	{
+		return playSound(spec.name, loop, spec.gain, spec.fade, spec.pitch * pitchmul);
+	}
+
 	int playSoundAt(const SimpleSoundSpec &spec, bool loop, const v3f &pos)
 	{
 		return playSoundAt(spec.name, loop, spec.gain, pos, spec.pitch);
